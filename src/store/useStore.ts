@@ -1,22 +1,19 @@
 import { create } from 'zustand';
+import { User } from '../types';
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  balance: number;
-  completedTasks: number;
-  onboardingComplete: boolean;
-  paymentMethod?: {
-    type: 'mtn' | 'flutterwave';
-    phoneNumber: string;
-  };
+interface AuthCredentials {
+  email?: string;
+  password?: string;
+  provider?: 'twitter';
 }
 
 interface AppState {
   user: User | null;
+  isAuthenticated: boolean;
   isOnboarding: boolean;
   currentOnboardingStep: number;
+  login: (credentials: AuthCredentials) => void;
+  logout: () => void;
   setUser: (user: User) => void;
   setOnboardingComplete: () => void;
   nextOnboardingStep: () => void;
@@ -25,20 +22,30 @@ interface AppState {
 }
 
 export const useStore = create<AppState>((set) => ({
-  user: {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    balance: 2.50,
-    completedTasks: 5,
-    onboardingComplete: true,
-    paymentMethod: {
-      type: 'mtn',
-      phoneNumber: '+234 123 456 7890'
-    }
-  },
+  user: null,
+  isAuthenticated: false,
   isOnboarding: false,
   currentOnboardingStep: 0,
+  login: (credentials) => {
+    // Simulate authentication
+    const mockUser = {
+      id: '1',
+      name: 'John Doe',
+      email: credentials.email ?? 'john@example.com',
+      balance: 2.50,
+      completedTasks: 5,
+      onboardingComplete: true,
+      reputation: 100,
+      level: '2',
+      skills: ['Content Creation', 'Social Media'],
+      paymentMethod: {
+        type: 'mtn',
+        phoneNumber: '+234 123 456 7890'
+      }
+    };
+    set({ user: mockUser, isAuthenticated: true });
+  },
+  logout: () => set({ user: null, isAuthenticated: false }),
   setUser: (user) => set({ user }),
   setOnboardingComplete: () => 
     set((state) => ({

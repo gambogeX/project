@@ -1,21 +1,20 @@
 import React from 'react';
-import { Header } from './components/Header';
-import { OnboardingFlow } from './components/onboarding/OnboardingFlow';
 import { useStore } from './store/useStore';
 import { Dashboard } from './components/Dashboard';
+import { AuthScreen } from './components/auth/AuthScreen';
+import { ThemeProvider } from './components/theme/ThemeProvider';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
-  const { isOnboarding } = useStore();
-
-  if (isOnboarding) {
-    return <OnboardingFlow />;
-  }
+  const { isAuthenticated } = useStore();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      <Dashboard />
-    </div>
+    <ThemeProvider>
+      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
+        {isAuthenticated ? <Dashboard /> : <AuthScreen />}
+        <Toaster position="bottom-right" />
+      </div>
+    </ThemeProvider>
   );
 }
 
