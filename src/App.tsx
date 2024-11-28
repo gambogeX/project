@@ -1,11 +1,22 @@
 import React from 'react';
+import { Header } from './components/Header';
+import { OnboardingFlow } from './components/onboarding/OnboardingFlow';
+import { useStore } from './store/useStore';
+import { Dashboard } from './components/Dashboard';
 
-const App: React.FC = () => {
-    return (
-        <div>
-            <h1>Hello, World!</h1>
-        </div>
-    );
-};
+function App() {
+  const { isOnboarding } = useStore();
 
-export default App; // Ensure this is a default export
+  if (isOnboarding) {
+    return <OnboardingFlow />;
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <Dashboard />
+    </div>
+  );
+}
+
+export default App;

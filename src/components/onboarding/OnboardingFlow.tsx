@@ -1,99 +1,50 @@
-import React, { useState } from 'react';
-import { userOnboarding } from '../../services/onboarding';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { MobileMoneyStep } from './Steps/MobileMoneyStep';
-import { SkillAssessmentStep } from './Steps/SkillAssessmentStep';
-import { VerificationStep } from './Steps/VerificationStep';
 import axios from 'axios';
-import { AES, enc } from 'crypto-js';
-import { logger } from '../../services/logger';
-
-const phoneSchema = z.object({
-  phoneNumber: z.string()
-    .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format')
-});
+import { userOnboarding } from '../../services/onboarding'; // Add this import
+import { logger } from '../../services/logger'; // Add this import if you have a logger service
 
 const api = axios.create({
-  baseURL: process.env.VITE_API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Add interceptors for authentication
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-export const onboardingApi = {
-  verifyPhone: async (phoneNumber: string) => {
-    return api.post('/onboarding/verify-phone', { phoneNumber });
-  },
-  
-  verifyCode: async (phoneNumber: string, code: string) => {
-    return api.post('/onboarding/verify-code', { phoneNumber, code });
-  },
-  
+const onboardingApi = {
   linkMobileMoney: async (provider: string, phoneNumber: string) => {
     return api.post('/onboarding/link-mobile-money', { provider, phoneNumber });
   },
-  
-  submitSkillAssessment: async (answers: Record<string, any>) => {
-    return api.post('/onboarding/skill-assessment', { answers });
-  },
-};
-
-export const security = {
-  // Encrypt sensitive data
-  encrypt: (text: string): string => {
-    return AES.encrypt(text, process.env.VITE_ENCRYPTION_KEY!).toString();
-  },
-
-  // Decrypt sensitive data
-  decrypt: (ciphertext: string): string => {
-    const bytes = AES.decrypt(ciphertext, process.env.VITE_ENCRYPTION_KEY!);
-    return bytes.toString(enc.Utf8);
-  },
-
-  // Rate limiting for verification attempts
-  verificationAttempts: new Map<string, number>(),
-
-  checkRateLimit: (phoneNumber: string): boolean => {
-    const attempts = security.verificationAttempts.get(phoneNumber) || 0;
-    if (attempts >= 3) return false;
-    security.verificationAttempts.set(phoneNumber, attempts + 1);
-    return true;
-  },
-};
-
-type PhoneFormData = {
-  phoneNumber: string;
 };
 
 export const OnboardingFlow = () => {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+
+  const phoneSchema = z.object({
+    phoneNumber: z.string().min(10, 'Phone number must be at least 10 characters long')
+  });
+
+  type PhoneFormData = z.infer<typeof phoneSchema>;
 
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<PhoneFormData>({
     resolver: zodResolver(phoneSchema)
   });
 
-  const onSubmit = async (data: { phoneNumber: string }) => {
+  const onSubmit = async (data: PhoneFormData) => {
     setIsLoading(true);
     setError(null);
     try {
       await userOnboarding(data.phoneNumber);
+      setPhoneNumber(data.phoneNumber);
       setStep(2);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
@@ -101,6 +52,16 @@ export const OnboardingFlow = () => {
       logger.error('Onboarding Error:', err);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const linkMobileMoney = async (provider: string) => {
+    try {
+      await onboardingApi.linkMobileMoney(provider, phoneNumber);
+      setStep(3);
+    } catch (error) {
+      logger.error('Link Mobile Money Error:', error);
+      setError('Failed to link mobile money');
     }
   };
 
@@ -140,30 +101,21 @@ export const OnboardingFlow = () => {
       )}
 
       {step === 2 && <MobileMoneyStep onLinkMobileMoney={linkMobileMoney} />}
-      {step === 3 && <SkillAssessmentStep />}
-      {step === 4 && <VerificationStep />}
     </div>
   );
 };
 
-export const MobileMoneyStep = ({ onLinkMobileMoney }) => {
+interface MobileMoneyStepProps {
+  onLinkMobileMoney: (provider: string) => void;
+}
+
+export const MobileMoneyStep = ({ onLinkMobileMoney }: MobileMoneyStepProps) => {
   const providers = [
     'M-Pesa',
     'MTN Mobile Money',
     'Airtel Money',
     'Orange Money'
   ];
-
-  const handleLinkMobileMoney = async (provider: string) => {
-    try {
-      const phoneNumber = ''; // Get the phone number from state or props
-      await onboardingApi.linkMobileMoney(provider, phoneNumber);
-      // Handle success (e.g., show a success message or navigate to the next step)
-    } catch (error) {
-      logger.error('Link Mobile Money Error:', error);
-      // Handle error (e.g., show an error message)
-    }
-  };
 
   return (
     <div className="space-y-4">
@@ -173,7 +125,7 @@ export const MobileMoneyStep = ({ onLinkMobileMoney }) => {
           <button
             key={provider}
             className="btn-secondary text-left flex items-center"
-            onClick={() => handleLinkMobileMoney(provider)}
+            onClick={() => onLinkMobileMoney(provider)}
           >
             <span className="flex-1">{provider}</span>
             <span className="text-gray-400">→</span>
