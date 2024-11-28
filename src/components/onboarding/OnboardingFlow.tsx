@@ -72,6 +72,10 @@ export const security = {
   },
 };
 
+type PhoneFormData = {
+  phoneNumber: string;
+};
+
 export const OnboardingFlow = () => {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +96,8 @@ export const OnboardingFlow = () => {
       await userOnboarding(data.phoneNumber);
       setStep(2);
     } catch (err) {
-      setError(err.message);
+      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+      setError(errorMessage);
       logger.error('Onboarding Error:', err);
     } finally {
       setIsLoading(false);
@@ -134,20 +139,31 @@ export const OnboardingFlow = () => {
         </form>
       )}
 
-      {step === 2 && <MobileMoneyStep />}
+      {step === 2 && <MobileMoneyStep onLinkMobileMoney={linkMobileMoney} />}
       {step === 3 && <SkillAssessmentStep />}
       {step === 4 && <VerificationStep />}
     </div>
   );
 };
 
-export const MobileMoneyStep = () => {
+export const MobileMoneyStep = ({ onLinkMobileMoney }) => {
   const providers = [
     'M-Pesa',
     'MTN Mobile Money',
     'Airtel Money',
     'Orange Money'
   ];
+
+  const handleLinkMobileMoney = async (provider: string) => {
+    try {
+      const phoneNumber = ''; // Get the phone number from state or props
+      await onboardingApi.linkMobileMoney(provider, phoneNumber);
+      // Handle success (e.g., show a success message or navigate to the next step)
+    } catch (error) {
+      logger.error('Link Mobile Money Error:', error);
+      // Handle error (e.g., show an error message)
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -157,6 +173,7 @@ export const MobileMoneyStep = () => {
           <button
             key={provider}
             className="btn-secondary text-left flex items-center"
+            onClick={() => handleLinkMobileMoney(provider)}
           >
             <span className="flex-1">{provider}</span>
             <span className="text-gray-400">→</span>
