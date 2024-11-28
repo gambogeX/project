@@ -1,52 +1,29 @@
 import { create } from 'zustand';
-import { User } from '../types';
-
-interface AuthCredentials {
-  email?: string;
-  password?: string;
-  provider?: 'twitter';
-}
+import { AuthUser, AuthError } from '../types/auth';
 
 interface AppState {
-  user: User | null;
-  isAuthenticated: boolean;
+  user: AuthUser | null;
+  loading: boolean;
+  error: AuthError | null;
   isOnboarding: boolean;
   currentOnboardingStep: number;
-  login: (credentials: AuthCredentials) => void;
-  logout: () => void;
-  setUser: (user: User) => void;
+  setUser: (user: AuthUser | null) => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: AuthError | null) => void;
   setOnboardingComplete: () => void;
   nextOnboardingStep: () => void;
   previousOnboardingStep: () => void;
-  updateBalance: (newBalance: number) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
   user: null,
-  isAuthenticated: false,
+  loading: false,
+  error: null,
   isOnboarding: false,
   currentOnboardingStep: 0,
-  login: (credentials) => {
-    // Simulate authentication
-    const mockUser = {
-      id: '1',
-      name: 'John Doe',
-      email: credentials.email ?? 'john@example.com',
-      balance: 2.50,
-      completedTasks: 5,
-      onboardingComplete: true,
-      reputation: 100,
-      level: '2',
-      skills: ['Content Creation', 'Social Media'],
-      paymentMethod: {
-        type: 'mtn',
-        phoneNumber: '+234 123 456 7890'
-      }
-    };
-    set({ user: mockUser, isAuthenticated: true });
-  },
-  logout: () => set({ user: null, isAuthenticated: false }),
   setUser: (user) => set({ user }),
+  setLoading: (loading) => set({ loading }),
+  setError: (error) => set({ error }),
   setOnboardingComplete: () => 
     set((state) => ({
       user: state.user ? { ...state.user, onboardingComplete: true } : null,
@@ -56,8 +33,4 @@ export const useStore = create<AppState>((set) => ({
     set((state) => ({ currentOnboardingStep: state.currentOnboardingStep + 1 })),
   previousOnboardingStep: () =>
     set((state) => ({ currentOnboardingStep: state.currentOnboardingStep - 1 })),
-  updateBalance: (newBalance) =>
-    set((state) => ({
-      user: state.user ? { ...state.user, balance: newBalance } : null
-    })),
 }));
