@@ -1,4 +1,3 @@
-import React from 'react';
 import { Header } from './components/Header';
 import { OnboardingFlow } from './components/onboarding/OnboardingFlow';
 import { useStore } from './store/useStore';

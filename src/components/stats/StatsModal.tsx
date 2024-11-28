@@ -1,31 +1,28 @@
-import React from 'react';
-import { BarChart, TrendingUp, Target, Award, Clock, X } from 'lucide-react';
+import { TrendingUp, Target, Award, Clock, X } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useStore } from '../../store/useStore';
 
 interface StatsModalProps {
   onClose: () => void;
 }
 
 export function StatsModal({ onClose }: StatsModalProps) {
-  const { user } = useStore();
 
   const stats = [
     {
       label: "Tasks Completed",
-      value: user?.completedTasks ?? 0,
+      value:  0,
       icon: Target,
       change: "+12% from last week",
     },
     {
       label: "Current Level",
-      value: user?.level ?? "1",
+      value:  "1",
       icon: Award,
       change: "2 tasks until next level",
     },
     {
       label: "Total Earnings",
-      value: `$${user?.balance.toFixed(2)}`,
+      value: "0.00",
       icon: TrendingUp,
       change: "+$1.50 this week",
     },
