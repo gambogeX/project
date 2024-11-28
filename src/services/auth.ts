@@ -1,4 +1,4 @@
-import { AuthUser, LoginCredentials, SignupCredentials, AuthError } from '../types/auth';
+import { AuthUser, LoginCredentials, SignupCredentials } from '../types/auth';
 
 // Simulated API delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -26,7 +26,8 @@ export class AuthService {
         email: credentials.email,
         name: 'Demo User',
         emailVerified: true,
-        provider: 'email'
+        provider: 'email',
+        balance: 0
       };
       
       localStorage.setItem(this.storageKey, 'demo_token');
@@ -44,7 +45,8 @@ export class AuthService {
       email: credentials.email,
       name: credentials.name,
       emailVerified: false,
-      provider: 'email'
+      provider: 'email',
+      balance: 0
     };
 
     localStorage.setItem(this.storageKey, 'demo_token');
@@ -66,7 +68,8 @@ export class AuthService {
       email: 'demo@example.com',
       name: 'Demo User',
       emailVerified: true,
-      provider: 'email'
+      provider: 'email',
+      balance: 0
     };
   }
 

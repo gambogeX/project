@@ -1,6 +1,5 @@
-import React from 'react';
 import { X, Twitter, Clock, DollarSign, ExternalLink } from 'lucide-react';
-import { Task } from '../types';
+import { Task } from 'twilio/lib/twiml/VoiceResponse';
 
 interface TaskDetailModalProps {
   task: Task;

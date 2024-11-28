@@ -1,4 +1,4 @@
-import { LearningResource } from '../types';
+import { LearningResource } from '../types/index';
 
 export const learningResources: LearningResource[] = [
   {

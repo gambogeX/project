@@ -1,9 +1,15 @@
-import React from 'react';
-import { Clock, DollarSign, Star, Twitter } from 'lucide-react';
-import { Task } from '../types';
+import { Clock, DollarSign, Twitter } from 'lucide-react';
+import { Task } from 'twilio/lib/twiml/VoiceResponse';
 
 interface TaskCardProps extends Task {
+  title: string;
   onClick: () => void;
+  description: string;
+  reward: number;
+  timeRequired: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  platform: string;
+  status?: 'available' | 'in_progress' | 'completed' | 'verified';
 }
 
 export function TaskCard({

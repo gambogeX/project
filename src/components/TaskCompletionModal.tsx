@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Check, Loader2 } from 'lucide-react';
-import { Task } from '../types';
+import { Task } from 'twilio/lib/twiml/VoiceResponse';
 
 interface TaskCompletionModalProps {
   task: Task;
@@ -8,7 +8,7 @@ interface TaskCompletionModalProps {
   onSubmit: (link: string) => Promise<void>;
 }
 
-export function TaskCompletionModal({ task, onClose, onSubmit }: TaskCompletionModalProps) {
+export function TaskCompletionModal({ onClose, onSubmit }: TaskCompletionModalProps) {
   const [tweetLink, setTweetLink] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');

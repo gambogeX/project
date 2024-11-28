@@ -13,6 +13,7 @@ interface AppState {
   setOnboardingComplete: () => void;
   nextOnboardingStep: () => void;
   previousOnboardingStep: () => void;
+  login: (credentials: { email?: string; password?: string; provider?: string }) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -33,4 +34,10 @@ export const useStore = create<AppState>((set) => ({
     set((state) => ({ currentOnboardingStep: state.currentOnboardingStep + 1 })),
   previousOnboardingStep: () =>
     set((state) => ({ currentOnboardingStep: state.currentOnboardingStep - 1 })),
+  login: (credentials) => {
+    // Implement your login logic here, e.g., call an API
+    // Inside the `login` function in `useStore`
+    // const response = await axios.post('http://localhost:3000/api/auth/login', { email, password });
+    console.log('Logging in with credentials:', credentials);
+  },
 }));

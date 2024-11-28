@@ -5,6 +5,11 @@ export interface AuthUser {
   avatar?: string;
   emailVerified?: boolean;
   provider?: 'email' | 'twitter';
+  balance: number;
+  paymentMethod?: {
+    type: 'mtn' | 'flutterwave';
+    phoneNumber: string;
+  };
 }
 
 export interface LoginCredentials {

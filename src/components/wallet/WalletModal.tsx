@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
 import { Wallet, ArrowUpRight, History, DollarSign, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../../store/useStore';
+import { useState } from 'react';
 
 interface Transaction {
   id: string;

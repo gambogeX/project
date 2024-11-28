@@ -1,6 +1,31 @@
-import { Task } from '../types';
+interface TaskInterface {
+  id: string;
+  title: string;
+  description: string;
+  reward: number;
+  timeRequired: string;
+  difficulty: string;
+  category: string;
+  platform: string;
+  status: string;
+  requirements: string[];
+  successCriteria: string[];
+  verificationMethod: string;
+  skillsRequired: string[];
+  response?: unknown;
+  _propertyName: string;
+  task: {
+    name: string;
+    attribs: Record<string, unknown>;
+    clone: () => Record<string, unknown>;
+    attribute: (attrName: string) => string;
+  };
+  _getXml: () => void;
+  addText: (content: string) => void;
+  addChild: (tagName: string, attributes: Record<string, unknown>) => Element;
+}
 
-export const tasks: Task[] = [
+export const tasks: TaskInterface[] = [
   {
     id: '1',
     title: "Like and Engage with Brand Posts",
@@ -21,7 +46,24 @@ export const tasks: Task[] = [
       "Stay engaged for minimum 30 seconds"
     ],
     verificationMethod: "Automatic via Twitter API",
-    skillsRequired: ["Basic Twitter Navigation"]
+    skillsRequired: ["Basic Twitter Navigation"],
+    task: {
+      name: '',
+      attribs: {},
+      clone: () => ({}),
+      attribute: () => '',
+    },
+    response: undefined,
+    _propertyName: '',
+    _getXml: function () {
+      throw new Error('Function not implemented.');
+    },
+    addText: function (_content: string): void {
+      throw new Error('Function not implemented.');
+    },
+    addChild: function (_tagName: string, _attributes: Record<string, unknown>): Element {
+      throw new Error('Function not implemented.');
+    }
   },
   {
     id: '2',
@@ -45,7 +87,24 @@ export const tasks: Task[] = [
       "Use specified hashtags"
     ],
     verificationMethod: "AI Content Quality Check",
-    skillsRequired: ["Content Writing", "Photography", "Twitter Threading"]
+    skillsRequired: ["Content Writing", "Photography", "Twitter Threading"],
+    task: {
+      name: '',
+      attribs: {},
+      clone: () => ({}),
+      attribute: () => '',
+    },
+    response: undefined,
+    _propertyName: '',
+    _getXml: function () {
+      throw new Error('Function not implemented.');
+    },
+    addText: function (_content: string): void {
+      throw new Error('Function not implemented.');
+    },
+    addChild: function (_tagName: string, _attributes: Record<string, unknown>): Element {
+      throw new Error('Function not implemented.');
+    }
   },
   {
     id: '3',
@@ -67,6 +126,23 @@ export const tasks: Task[] = [
       "Submit within time limit"
     ],
     verificationMethod: "Manual Review",
-    skillsRequired: ["Written Communication", "Local Market Knowledge"]
+    skillsRequired: ["Written Communication", "Local Market Knowledge"],
+    task: {
+      name: '',
+      attribs: {},
+      clone: () => ({}),
+      attribute: () => '',
+    },
+    response: undefined,
+    _propertyName: '',
+    _getXml: function () {
+      throw new Error('Function not implemented.');
+    },
+    addText: function (_content: string): void {
+      throw new Error('Function not implemented.');
+    },
+    addChild: function (_tagName: string, _attributes: Record<string, unknown>): Element {
+      throw new Error('Function not implemented.');
+    }
   }
 ];
