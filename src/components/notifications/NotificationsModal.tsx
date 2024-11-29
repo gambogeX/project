@@ -1,9 +1,5 @@
-import React from 'react';
-import { Bell, Check, X, AlertCircle, Trophy, DollarSign } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { Modal } from '../common/Modal';
-import { Badge } from '../common/Badge';
-import { formatTimeAgo } from '../../utils/formatters';
+import { AlertCircle, Bell, Check, Trophy } from "lucide-react";
+import { Modal } from "../common/Modal";
 
 interface Notification {
   id: string;
@@ -59,7 +55,7 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
     }
   };
 
-  const getNotificationStyle = (type: Notification['type'], read: boolean) => {
+  const getNotificationStyle = (_type: Notification['type'], read: boolean) => {
     const baseStyle = read
       ? 'bg-gray-50 dark:bg-gray-700/50'
       : 'bg-indigo-50 dark:bg-indigo-900/20';

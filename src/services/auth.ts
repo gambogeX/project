@@ -23,6 +23,7 @@ export class AuthService {
     if (credentials.email === 'demo@example.com' && credentials.password === 'password') {
       const user: AuthUser = {
         id: '1',
+        level: 2,
         email: credentials.email,
         name: 'Demo User',
         emailVerified: true,
@@ -42,6 +43,7 @@ export class AuthService {
 
     const user: AuthUser = {
       id: Date.now().toString(),
+      level: 1,
       email: credentials.email,
       name: credentials.name,
       emailVerified: false,
@@ -65,6 +67,7 @@ export class AuthService {
     // In a real app, this would validate the token with the backend
     return {
       id: '1',
+      level: 1,
       email: 'demo@example.com',
       name: 'Demo User',
       emailVerified: true,

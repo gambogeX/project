@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight, Twitter } from 'lucide-react';
 import { useStore } from '../../../store/useStore';
+import { useState } from 'react';
 
 export function SocialAccountsStep() {
   const { nextOnboardingStep, previousOnboardingStep } = useStore();

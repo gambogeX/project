@@ -1,4 +1,4 @@
-interface TaskInterface {
+export interface TaskInterface {
   id: string;
   title: string;
   description: string;

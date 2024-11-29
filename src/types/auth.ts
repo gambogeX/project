@@ -2,6 +2,7 @@ export interface AuthUser {
   id: string;
   email: string;
   name: string;
+  level: number;
   avatar?: string;
   emailVerified?: boolean;
   provider?: 'email' | 'twitter';

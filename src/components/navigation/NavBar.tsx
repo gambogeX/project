@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { BookOpen, BarChart, Wallet, Bell, Trophy, User } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { motion } from 'framer-motion';
@@ -7,6 +6,7 @@ import { StatsModal } from '../stats/StatsModal';
 import { NotificationsModal } from '../notifications/NotificationsModal';
 import { WalletModal } from '../wallet/WalletModal';
 import { ThemeToggle } from '../theme/ThemeToggle';
+import { useState } from 'react';
 
 interface NavBarProps {
   showLearning: boolean;

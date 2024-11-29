@@ -1,7 +1,7 @@
-import React from 'react';
 import { Search, Filter, Star, BarChart } from 'lucide-react';
-import { TaskDifficulty } from '../../types';
 import { motion } from 'framer-motion';
+
+type TaskDifficulty = 'Basic' | 'Intermediate' | 'Advanced' | 'Expert';
 
 interface TaskFiltersProps {
   selectedDifficulty: TaskDifficulty | 'All';
@@ -26,7 +26,7 @@ export function TaskFilters({
             className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
         </div>
-        
+
         <select
           value={selectedDifficulty}
           onChange={(e) => onDifficultyChange(e.target.value as TaskDifficulty | 'All')}
@@ -38,8 +38,8 @@ export function TaskFilters({
           <option value="Advanced">Advanced</option>
           <option value="Expert">Expert</option>
         </select>
-        
-        <motion.button 
+
+        <motion.button
           whileHover={{ scale: 1.02 }}
           className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg"
         >

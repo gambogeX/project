@@ -1,10 +1,19 @@
-import React from 'react';
 import { Clock, DollarSign, Twitter, Star, Trophy } from 'lucide-react';
-import { Task } from '../../types';
+
+interface LocalTask {
+  title: string;
+  description: string;
+  reward: number;
+  timeRequired: string;
+  skillsRequired: string[];
+  difficulty: 'Basic' | 'Intermediate' | 'Advanced' | 'Expert';
+  status?: 'available' | 'in_progress' | 'completed' | 'verified';
+  category: 'Content Creation' | 'Survey & Feedback' | 'Other';
+}
 import { motion } from 'framer-motion';
 
 interface TaskCardProps {
-  task: Task;
+  task: LocalTask;
   onClick: () => void;
 }
 
@@ -14,7 +23,7 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
     Intermediate: 'bg-yellow-100 text-yellow-800 border-yellow-200',
     Advanced: 'bg-red-100 text-red-800 border-red-200',
     Expert: 'bg-purple-100 text-purple-800 border-purple-200',
-  }[task.difficulty];
+  }[task.difficulty as 'Basic' | 'Intermediate' | 'Advanced' | 'Expert'];
 
   const statusBadge = task.status && {
     available: '',

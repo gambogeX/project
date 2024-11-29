@@ -1,6 +1,17 @@
-import React from 'react';
 import { TaskCard } from './TaskCard';
-import { Task, TaskDifficulty } from '../../types';
+
+type TaskDifficulty = 'Basic' | 'Intermediate' | 'Advanced' | 'Expert';
+
+interface Task {
+  id: string;
+  title: string;
+  description: string;
+  difficulty: TaskDifficulty;
+  reward: number;
+  timeRequired: string;
+  skillsRequired: string[];
+  category: 'Content Creation' | 'Survey & Feedback' | 'Other';
+}
 
 interface TaskGridProps {
   tasks: Task[];
