@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Check, Loader2 } from 'lucide-react';
-import { Task } from 'twilio/lib/twiml/VoiceResponse';
+import { Task } from '../types/TaskTypes';
 
 interface TaskCompletionModalProps {
   task: Task;

@@ -1,7 +1,8 @@
+import { tasks as originalTasks } from '../data/tasks';
+import { CustomTask, TaskDifficulty, TaskCategory, TaskStatus } from '../types/TaskTypes'; // Update this import path
 import { TaskDetailModal } from './TaskDetailModal';
 import { TaskCompletionModal } from './TaskCompletionModal';
 import { useStore } from '../store/useStore';
-import { tasks, TaskInterface } from '../data/tasks';
 import toast from 'react-hot-toast';
 import { LearningSection } from './learning/LearningSection';
 import { NavBar } from './navigation/NavBar';
@@ -9,29 +10,31 @@ import { TaskGrid } from './tasks/TaskGrid';
 import { TaskFilters } from './tasks/TaskFilters';
 import { useState } from 'react';
 
-type TaskDifficulty = 'Basic' | 'Intermediate' | 'Advanced' | 'Expert';
-
-interface Task extends TaskInterface {
-  difficulty: TaskDifficulty;
-  category: 'Content Creation' | 'Survey & Feedback' | 'Other';
-}
-
 export function Dashboard() {
   const { user } = useStore();
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [selectedTask, setSelectedTask] = useState<CustomTask | null>(null);
   const [isCompletionModalOpen, setIsCompletionModalOpen] = useState(false);
   const [showLearning, setShowLearning] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState<TaskDifficulty | 'All'>('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredTasks = tasks
-    .map(task => ({ ...task, difficulty: task.difficulty as TaskDifficulty }))
-    .filter(task => {
-      const matchesDifficulty = selectedDifficulty === 'All' || task.difficulty === selectedDifficulty;
-      const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           task.description.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesDifficulty && matchesSearch;
-    });
+  // Explicitly type the tasks with the new Task interface
+  const tasks: CustomTask[] = originalTasks.map(task => ({
+    ...task,
+    difficulty: task.difficulty as TaskDifficulty,
+    category: (task.category || 'Other') as TaskCategory,
+    status: (task.status || 'Available') as TaskStatus,
+    platform: task.platform || '',
+    requirements: task.requirements || [],
+    successCriteria: task.successCriteria || []
+  }));
+
+  const filteredTasks = tasks.filter(task => {
+    const matchesDifficulty = selectedDifficulty === 'All' || task.difficulty === selectedDifficulty;
+    const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          task.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesDifficulty && matchesSearch;
+  });
 
   const handleStartTask = () => {
     if (selectedTask) {

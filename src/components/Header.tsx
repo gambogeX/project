@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
 import { Bell, Menu, Wallet } from 'lucide-react';
 import { WithdrawalModal } from './WithdrawalModal';
 import { useStore } from '../store/useStore';
+import { useState } from 'react';
 
 export function Header() {
   const { user } = useStore();

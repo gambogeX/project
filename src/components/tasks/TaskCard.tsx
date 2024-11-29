@@ -7,7 +7,7 @@ interface LocalTask {
   timeRequired: string;
   skillsRequired: string[];
   difficulty: 'Basic' | 'Intermediate' | 'Advanced' | 'Expert';
-  status?: 'available' | 'in_progress' | 'completed' | 'verified';
+  status?: 'Available' | 'In Progress' | 'Completed' | 'Expired';
   category: 'Content Creation' | 'Survey & Feedback' | 'Other';
 }
 import { motion } from 'framer-motion';
@@ -30,7 +30,7 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
     in_progress: 'bg-blue-100 text-blue-800 border-blue-200',
     completed: 'bg-green-100 text-green-800 border-green-200',
     verified: 'bg-purple-100 text-purple-800 border-purple-200',
-  }[task.status];
+  }[task.status.toLowerCase() as 'available' | 'in_progress' | 'completed' | 'verified'];
 
   return (
     <motion.div

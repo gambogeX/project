@@ -1,21 +1,9 @@
+import { CustomTask } from '../../types/TaskTypes';
 import { TaskCard } from './TaskCard';
 
-type TaskDifficulty = 'Basic' | 'Intermediate' | 'Advanced' | 'Expert';
-
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  difficulty: TaskDifficulty;
-  reward: number;
-  timeRequired: string;
-  skillsRequired: string[];
-  category: 'Content Creation' | 'Survey & Feedback' | 'Other';
-}
-
 interface TaskGridProps {
-  tasks: Task[];
-  onSelectTask: (task: Task) => void;
+  tasks: CustomTask[];
+  onSelectTask: (task: CustomTask) => void;
 }
 
 export function TaskGrid({ tasks, onSelectTask }: TaskGridProps) {
